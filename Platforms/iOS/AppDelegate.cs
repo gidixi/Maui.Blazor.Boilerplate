@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Maui.Blazor.Boilerplate
+namespace Maui.Blazor.Boilerplate.Platforms.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

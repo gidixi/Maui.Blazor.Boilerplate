@@ -1,41 +1,282 @@
-﻿html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+﻿/* App-wide styles */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* L'app deve occupare l'intera altezza della finestra */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7f7f7;
 }
 
-a, .btn-link {
-    color: #006bb7;
+/* Header (bloccato) */
+.app-header {
+    background-color: #FB8C00;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    font-size: 1.5em;
+    position: fixed; /* Rende l'header fisso */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Assicura che l'header stia sopra gli altri elementi */
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+/* Main content area (scorrevole) */
+.app-content {
+    flex: 1;
+    padding: 20px;
+    margin-top: 80px; /* Spazio lasciato per l'header fisso */
+    margin-bottom: 60px; /* Spazio lasciato per il footer fisso */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Consente lo scorrimento solo del contenuto */
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* Footer (bloccato) */
+.app-footer {
+    background-color: #FB8C00;
+    padding: 10px 0;
+    text-align: center;
+    position: fixed; /* Rende il footer fisso */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Assicura che il footer stia sopra gli altri elementi */
 }
 
-.content {
-    padding-top: 1.1rem;
+/* Navigation links */
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
 }
 
-h1:focus {
-    outline: none;
+    .nav-links li {
+        display: inline;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.1em;
+    }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+/* Responsive adjustments for mobile */
+@media (max-width: 600px) {
+    .app-header h1 {
+        font-size: 1.2em;
+    }
+
+    .nav-links a {
+        font-size: 0.9em;
+    }
+
+    .app-content {
+        padding: 10px;
+        margin-top: 70px;
+        margin-bottom: 50px;
+    }
 }
 
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+/* Generic container for sections */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
 }
 
-.invalid {
-    outline: 1px solid #e50000;
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.validation-message {
-    color: #e50000;
+/* Card design */
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
+    .card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.card-header {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.card-body {
+    font-size: 0.8em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card select,
+.card input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #E65100;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: #FF6D00;
+    }
+
+.btn-secondary {
+    background-color: #008CBA;
+}
+
+    .btn-secondary:hover {
+        background-color: #007bb5;
+    }
+
+.btn-block {
+    width: 100%;
+    text-align: center;
+}
+
+/* Spinner */
+#splash-screen-color {
+    background-color: #FB8C00; /* Colore di sfondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+#splash-screen-white {
+    background-color: #FFFFFF; /* Sfondo bianco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.spinner {
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 8px solid white;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-black {
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 8px solid rgba(0, 0, 0, 0.2);
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Contenitore per la select e l'icona */
+.select-container {
+    display: flex;
+    align-items: center; /* Allinea gli elementi verticalmente */
+    gap: 10px; /* Spazio tra la select e l'icona */
+}
+
+    /* Stile per la select */
+    .select-container select {
+        flex: 1; /* Riempie lo spazio disponibile */
+        padding: 10px;
+        font-size: 1em;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        height: 42px; /* Altezza coerente */
+        box-sizing: border-box; /* Assicura che il padding non influenzi la dimensione */
+    }
+
+/* Stile per l'icona trash */
+.delete-icon {
+    color: #E65100;
+    cursor: pointer;
+    font-size: 1.4em; /* Dimensione coerente con la select */
+    display: flex;
+    align-items: center; /* Centra verticalmente l'icona */
+    margin-left: 10px; /* Margine per separare l'icona dalla select */
+    height: 35px; /* Assicura la stessa altezza della select */
+    justify-content: center; /* Assicura che l'icona sia centrata orizzontalmente */
+}
+
+    .delete-icon:hover {
+        color: #FF6D00; /* Cambia colore quando si passa sopra l'icona */
+    }
+
+
+
+
+/* Mobile responsiveness for cards and buttons */
+@media (max-width: 600px) {
+    .card {
+        padding: 10px;
+    }
+
+    .btn, .btn-block {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .card-header {
+        font-size: 1.1em;
+    }
+
+    .card-body {
+        font-size: 0.8em;
+    }
+}
+
+/* Error UI */
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -65,6 +306,7 @@ h1:focus {
         content: "An error has occurred."
     }
 
+/* Safe area for iOS devices */
 .status-bar-safe-area {
     display: none;
 }

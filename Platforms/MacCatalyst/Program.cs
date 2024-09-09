@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Maui.Blazor.Boilerplate
+namespace Maui.Blazor.Boilerplate.Platforms.MacCatalyst
 {
     public class Program
     {

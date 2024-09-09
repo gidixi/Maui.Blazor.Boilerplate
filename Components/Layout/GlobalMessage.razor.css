@@ -1,0 +1,26 @@
+﻿.message-container {
+    position: fixed;
+    top: 60px; /* Posiziona il messaggio sotto l'header */
+    left: 0; /* Inizia dal lato sinistro della finestra */
+    width: 100%; /* Occupa tutta la larghezza della finestra */
+    z-index: 1000; /* Assicura che il messaggio stia sopra gli altri elementi */
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.alert {
+    padding: 15px;
+    background-color: #E65100;
+    color: white;
+    border-radius: 0;
+    font-size: 1.2em;
+}
+
+/* Per i dispositivi mobili */
+@media (max-width: 600px) {
+    .alert {
+        font-size: 0.8em;
+        padding: 10px;
+    }
+}

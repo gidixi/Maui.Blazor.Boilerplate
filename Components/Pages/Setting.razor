@@ -1,0 +1,148 @@
+﻿@page "/settings"
+@inject SettingsService settingsService
+@inject MessageService MessageService
+
+<div class="container">
+
+    <!-- Card per selezionare una delle possibili card -->
+    <div class="card">
+        <div class="card-header">
+            Fidelity Card
+        </div>
+        <div class="card-body">
+            <div class="select-container">
+                <select @onchange="OnCardChanged">
+                    @if (AllCardSaved != null)
+                    {
+                        @foreach (var item in AllCardSaved)
+                        {
+                            <option value="@item" selected="@(item == SelectedCard)">@item</option>
+                        }
+                    }
+                </select>
+                <!-- Aggiungi l'icona trash accanto alla select -->
+                <i class="fas fa-trash delete-icon" @onclick="OnDeleteCard"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card per inserire il codice della fidelity card -->
+    <div class="card">
+        <div class="card-header">
+            Inserisci il codice della tua Fidelity Card
+        </div>
+        <div class="card-body">
+            <p>Inserisci il codice della tua fidelity card per verificarlo e associarlo al tuo account.</p>
+            <input type="text" inputmode="numeric" @bind="FidelityCardCode" placeholder="Codice Fidelity Card" />
+        </div>
+        <div class="card-footer">
+            <button class="btn" @onclick="SaveFidelityCardCode">Salva Codice</button>
+        </div>
+    </div>
+
+    <!-- Card per il Negozio -->
+    <div class="card">
+        <div class="card-header">
+            Negozio
+        </div>
+        <div class="card-body">
+            Inserisci il nome del tuo negozio per la fidelity card.<br />
+            <input type="text" @bind="NomeNegozio" placeholder="Inserisci il nome" />
+        </div>
+        <div class="card-footer">
+            <button class="btn" @onclick="SalvaNegozio">Salva</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string SelectedCard = "";
+    private string Message = string.Empty;
+    private string FidelityCardCode = string.Empty;
+    private string NomeNegozio = string.Empty;
+    private List<string> AllCardSaved = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        AllCardSaved = settingsService.GetKeysFidelityCard();
+        SelectedCard = settingsService.GetSetting("SelectedCard");
+        NomeNegozio = settingsService.GetCustomer();
+
+        // Se c'è solo una carta disponibile, la selezioniamo automaticamente
+        if (AllCardSaved.Count == 1)
+        {
+            SelectedCard = AllCardSaved[0]; // Seleziona l'unica carta
+            settingsService.SaveSetting("SelectedCard", SelectedCard);
+        }
+    }
+
+    private async Task SelectFidelityCard()
+    {
+        settingsService.SaveSetting("SelectedCard", SelectedCard);
+        Message = "Fidelity Card salvata con successo!";
+        await MessageService.ShowMessageAsync(Message);
+    }
+
+    private async Task OnCardChanged(ChangeEventArgs e)
+    {
+        SelectedCard = e.Value.ToString();
+        await SelectFidelityCard();
+    }
+
+    private async Task SalvaNegozio()
+    {
+        settingsService.SaveCustomer(NomeNegozio);
+        await MessageService.ShowMessageAsync("Negozio impostato con successo!");
+    }
+
+    private async Task SaveFidelityCardCode()
+    {
+
+        if (string.IsNullOrEmpty(FidelityCardCode))
+        {
+            await MessageService.ShowMessageAsync("Inserisci un codice Fidelity Card");
+            return;
+        }
+
+
+
+        // Salva il codice della fidelity card
+        var ListaCard = settingsService.GetKeysFidelityCard();
+
+        if (!ListaCard.Contains(FidelityCardCode))
+        {
+            settingsService.SetKeyFidelityCard(FidelityCardCode);
+            settingsService.SaveSetting("SelectedCard", FidelityCardCode);
+            Message = "Codice Fidelity Card salvato con successo!";
+        }
+        else
+        {
+            Message = "Codice Fidelity Card già presente!";
+        }
+
+        await MessageService.ShowMessageAsync(Message);
+        AllCardSaved = settingsService.GetKeysFidelityCard(); // Aggiorna la lista delle carte salvate
+    }
+
+    private async Task OnDeleteCard()
+    {
+        if (string.IsNullOrEmpty(SelectedCard))
+        {
+            await MessageService.ShowMessageAsync("Seleziona una carta da eliminare");
+            return;
+        }
+        else
+        {
+            var msg = "Sei sicuro di rimuovere la Card N." + SelectedCard;
+            var ris = await Application.Current.MainPage.DisplayAlert("Rimuovi FidelityCard", msg, "Si", "No");
+            if (ris)
+            {
+                settingsService.RemoveKeyFidelityCard(SelectedCard);
+                await MessageService.ShowMessageAsync($"Carta n.{SelectedCard} eliminata");
+                AllCardSaved = settingsService.GetKeysFidelityCard(); // Aggiorna la lista delle carte salvate
+            }           
+        }
+
+       
+    }
+}

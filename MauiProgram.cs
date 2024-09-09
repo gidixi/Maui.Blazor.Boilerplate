@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Maui.Blazor.Boilerplate.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace Maui.Blazor.Boilerplate
 {
@@ -13,6 +14,13 @@ namespace Maui.Blazor.Boilerplate
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
+
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:7008/") });
+            builder.Services.AddScoped<AuthService>();
+            builder.Services.AddSingleton<SettingsService>();           
+            builder.Services.AddSingleton<MessageService>();
+            builder.Services.AddSingleton<AppState>();
+
 
             builder.Services.AddMauiBlazorWebView();
 

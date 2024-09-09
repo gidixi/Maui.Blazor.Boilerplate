@@ -1,0 +1,20 @@
+@inject MessageService MessageService
+
+<div class="message-container" style="@(MessageService.ShowMessage ? "display: block;" : "display: none;")">
+    <div class="alert">
+        @MessageService.Message
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        MessageService.OnMessageChanged += StateHasChanged;  // Ascolta i cambiamenti
+    }
+
+    public void Dispose()
+    {
+        MessageService.OnMessageChanged -= StateHasChanged;  // Rimuovi l'evento quando il componente viene distrutto
+    }
+}
+
